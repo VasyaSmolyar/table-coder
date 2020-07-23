@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>xHolding</title>
+        <link href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='styles.css')}}" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">xHolding</a>
+            </div>
+        </nav>
+        <div class="container my-main">
+            <h1>8 таблица</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="list">Имя листа</label>
+                    <input class="form-control" id="list" name="list">
+                    <label for="x_start">Начальный столбец</label>
+                    <input class="form-control" id="x_start" name="x_start">
+                    <label for="x_stop">Конечный столбец</label>
+                    <input class="form-control" id="x_stop" name="x_stop">
+                    <label for="y_start">Начальный индекс</label>
+                    <input class="form-control" id="y_start" name="y_start">
+                    <label for="y_stop">Конечный индекс</label>
+                    <input class="form-control" id="y_stop" name="y_stop">
+                    <label for="fields">Список заголовков</label>
+                    <textarea class="form-control" id="fields" name="fields" rows="5"></textarea>
+                </div>
+                <div class="image-input">
+                    <input type="file" id="sheet" name="sheet">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+            {% if res %}
+                <table class="table">
+                    <tbody>
+                        {% for tr in res %}
+                            <tr>
+                                {% for td in tr %}
+                                    <td>
+                                        {{ td }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <footer class="my-footer text-center">
+            <p>&copy; Vasily Smolyar 2020</p>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+.my-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    color: #fff;
+    background-color: #343a40;
+}
+
+.my-footer > p {
+    margin-bottom: 0;
+}
+
+.my-main {
+    margin-top: 50px;
+}
+
+.image-input {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
