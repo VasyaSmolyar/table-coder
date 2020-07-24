@@ -16,17 +16,17 @@
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="list">Имя листа</label>
-                    <input class="form-control" id="list" name="list">
+                    <input class="form-control" id="list" name="list" value="{{args[0]}}">
                     <label for="x_start">Начальный столбец</label>
-                    <input class="form-control" id="x_start" name="x_start">
+                    <input class="form-control" id="x_start" name="x_start" value="{{args[1]}}">
                     <label for="x_stop">Конечный столбец</label>
-                    <input class="form-control" id="x_stop" name="x_stop">
+                    <input class="form-control" id="x_stop" name="x_stop" value="{{args[2]}}">
                     <label for="y_start">Начальный индекс</label>
-                    <input class="form-control" id="y_start" name="y_start">
+                    <input class="form-control" id="y_start" name="y_start" value="{{args[3]}}">
                     <label for="y_stop">Конечный индекс</label>
-                    <input class="form-control" id="y_stop" name="y_stop">
+                    <input class="form-control" id="y_stop" name="y_stop" value="{{args[4]}}">
                     <label for="fields">Список заголовков</label>
-                    <textarea class="form-control" id="fields" name="fields" rows="5"></textarea>
+                    <textarea class="form-control" id="fields" name="fields" rows="5">{{args[5]}}</textarea>
                 </div>
                 <div class="image-input">
                     <input type="file" id="sheet" name="sheet">

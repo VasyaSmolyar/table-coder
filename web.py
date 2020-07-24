@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
+    args = ['' for i in range(6)]
     if request.method == 'POST':
         if 'sheet' in request.files:
             file = request.files['sheet']
@@ -15,8 +16,10 @@ def main():
                 request.form.get('x_stop'), int(request.form.get('y_start')), int(request.form.get('y_stop')), 
                 fields
             )
-            return render_template('root.html', res=res)
-    return render_template('root.html')
+            args = [request.form.get('list'), request.form.get('x_start'), 
+                request.form.get('x_stop'), request.form.get('y_start'), request.form.get('y_stop'), request.form.get('fields', '')]
+            return render_template('root.html', res=res, args=args)
+    return render_template('root.html', args=args)
 
 if __name__ == '__main__':
     app.run(debug=True)

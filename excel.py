@@ -13,8 +13,12 @@ def mnemonic(a):
 
 def amnemonic(res):
     if res > 26:
-        code = chr(res // 26 + ord('A') - 1)
-        code += chr(res % 26 + ord('A') - 1)
+        if res % 26 == 0:
+            code = chr((res-1) // 26 + ord('A') - 1)
+            code += 'Z'
+        else:
+            code = chr(res // 26 + ord('A') - 1)
+            code += chr(res % 26 + ord('A') - 1)
     else:
         code = chr(res + ord('A') - 1)
     return code
