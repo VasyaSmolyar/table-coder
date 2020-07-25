@@ -37,11 +37,14 @@ def unzip(s):
     mas2 = f.split(',')
     return mas2[0].strip()
 
-def compare(src, dest, scope=60):
-    a, b = (unzip(str(src).strip()), unzip(str(dest).strip()))
-    #if fuzz.token_set_ratio(a, b) >= scope:
-        #print(a, '###' ,b)
-    return fuzz.token_set_ratio(a, b) >= scope
+def best_match(src, fields):
+    scopes = [fuzz.ratio(src, el) for el in fields]
+    m = max(scopes)
+    return (m, scopes.index(m))
+
+def compare(src, dest, scope=40):
+    r, ind = best_match(unzip(str(src).strip()), dest)
+    return (r >= scope, ind)
 
 def by_index(filename, listname, x_start, x_stop, y_start, y_stop, fields):
     length = get_len(x_start, x_stop)
@@ -50,21 +53,15 @@ def by_index(filename, listname, x_start, x_stop, y_start, y_stop, fields):
     ws = wb[listname]
 
     for i in range(y_start, y_stop + 1):
-        for j in range(len(fields)):
-            #ind = get_index(ws[x_start + str(i)].value)
-            #if ind == get_index(fields[j]):
-            #ws[x_start + str(i)].value
-            if compare(ws[get_name(x_start, 1) + str(i)].value, fields[j]):
-                ind = get_index(fields[j])
-                print(ind)
-                if res[ind-1][0] != '\t':
-                    continue
-                for k in range(3, length):
-                    if ws[get_name(x_start, k) + str(i)].value == None:
-                        res[ind-1][k-3] = ''
-                    else:
-                        res[ind-1][k-3] = ws[get_name(x_start, k) + str(i)].value
-                break
+        dd, ind = compare(ws[get_name(x_start, 1) + str(i)].value, fields)
+        if dd:
+            if res[ind][0] != '\t':
+                continue
+            for k in range(3, length):
+                if ws[get_name(x_start, k) + str(i)].value == None:
+                    res[ind][k-3] = ''
+                else:
+                    res[ind][k-3] = ws[get_name(x_start, k) + str(i)].value
     return res
 
 #print(by_index('test.xlsx', 'Лист1', 'B', 'AB', 4, 16, [str(x) + '.' + 'Stonks' for x in range(1, 15)]))
