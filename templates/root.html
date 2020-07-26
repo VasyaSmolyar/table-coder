@@ -8,11 +8,16 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">xHolding</a>
+                <a class="navbar-brand" href="{{url_for('main')}}">xHolding</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{url_for('index')}}">По индексу</a>
+                    </li>
+                </ul>
             </div>
         </nav>
         <div class="container my-main">
-            <h1>8 таблица</h1>
+            <h1>{{name}}</h1>
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="list">Имя листа</label>
