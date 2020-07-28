@@ -65,8 +65,30 @@ def parse_xl(filename, listname, index, start, stop):
             s = str(cell.value)
         res.append(s)
 
-    return res 
+    return res
+
+def get_full(cell, parsed):
+    if cell[1] == cell[2] == cell[3] == 0:
+        return cell[4]
+    if cell[2] != 0 and cell[1] == 0:
+        cell[1] = cell[2]
+        cell[2] = 0
+    if cell[3] != 0 and cell[2] == 0:
+        cell[2] = cell[3]
+        cell[3] = 0
+    res = cell[4]
+
+    for i in range(3, 0, -1):
+        if cell[i] != 0:
+            j = cell[5]
+            f = cell[i - 1]
+            while parsed[j - 1][i] != 0:
+                j -= 1
+            res = parsed[j-1][4] + ' ' + res
+
+    return res
+
 
 #res = get_tree(parse_xl("tree.xlsx", '7', 'B', 5, 100), tab_depth)
 #for r in res:
-    #print(r)
+    #print(get_full(r, res))
