@@ -1,3 +1,5 @@
+from openpyxl import load_workbook
+
 def get_tree(fields, get_depth):
     res = []
     indices = [0, 0, 0, 0]
@@ -35,8 +37,6 @@ def get_tree(fields, get_depth):
         r.append(fields[i])
         r.append(i)
         res.append(r)
-        if i == 129 or i == 128 or i == 130:
-            print(m)
     return res
 
 def tab_depth(s, mem):
@@ -51,3 +51,22 @@ def tab_depth(s, mem):
     elif s.startswith('    ') or s.lower().startswith('в том числе'):
         return 1 + m, m0
     return 0 + m, m0
+
+def parse_xl(filename, listname, index, start, stop):
+    wb = load_workbook(filename=filename)
+    ws = wb[listname]
+    res = []
+
+    for i in range(start, stop + 1):
+        cell = ws[index + str(i)]
+        if cell.alignment.horizontal == 'right':
+            s = '        ' + str(cell.value)
+        else:
+            s = str(cell.value)
+        res.append(s)
+
+    return res 
+
+#res = get_tree(parse_xl("tree.xlsx", '7', 'B', 5, 100), tab_depth)
+#for r in res:
+    #print(r)
