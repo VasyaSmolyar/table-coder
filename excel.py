@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 from fuzzywuzzy import fuzz
+from tree import get_tree, tab_depth, parse_xl, get_full
 
 def get_index(line):
     line = str(line)
@@ -44,7 +45,8 @@ def best_match(src, fields):
     return (m, scopes.index(m))
 
 def compare(src, dest, scope=40):
-    r, ind = best_match(unzip(str(src).strip()), dest)
+    #r, ind = best_match(unzip(str(src).strip()), dest)
+    r, ind = best_match(src, dest)
     return (r >= scope, ind)
 
 def by_name(filename, listname, x_start, x_stop, y_start, y_stop, fields):
@@ -79,6 +81,32 @@ def by_index(filename, listname, x_start, x_stop, y_start, y_stop, fields):
                         res[j][k-3] = ''
                     else:
                         res[j][k-3] = ws[get_name(x_start, k) + str(i)].value
+    return res
+
+def tree_by_name(filename, listname, x_start, x_stop, y_start, y_stop, fields):
+    length = get_len(x_start, x_stop)
+    res = [['\t' for i in range(length-3)] for i in range(len(fields))]
+    wb = load_workbook(filename=filename)
+    ws = wb[listname]
+
+    x_tree = get_tree(parse_xl(filename, listname, get_name(x_start, 1), y_start, y_stop + 1), tab_depth)
+    y_tree = get_tree(fields, tab_depth)
+    aliases = [get_full(y_tree[i], y_tree) for i in range(len(y_tree))]
+    
+    j = 0
+    for i in range(y_start, y_stop + 1):
+        dd, ni = compare(get_full(x_tree[j], x_tree), aliases, 0)
+        if dd:
+            #print(get_full(x_tree[j], x_tree), "\n###\n", aliases[ni], "\n$$$")
+            ind = y_tree[ni][5]
+            if res[ind][0] != '\t':
+                continue
+            for k in range(3, length):
+                if ws[get_name(x_start, k) + str(i)].value == None:
+                    res[ind][k-3] = ''
+                else:
+                    res[ind][k-3] = ws[get_name(x_start, k) + str(i)].value
+        j += 1
     return res
 
 #print(by_name('test.xlsx', 'Лист1', 'B', 'AB', 4, 16, [str(x) + '.' + 'Stonks' for x in range(1, 15)]))

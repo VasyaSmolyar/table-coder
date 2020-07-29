@@ -84,7 +84,7 @@ def get_full(cell, parsed):
             f = cell[i - 1]
             while parsed[j - 1][i] != 0:
                 j -= 1
-            res = parsed[j-1][4] + ' ' + res
+            res = parsed[j-1][4].strip() + ' ' + res.strip()
 
     return res
 
