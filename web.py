@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from excel import by_name, by_index, tree_by_name
+from excel import by_name, by_index, tree_by_name, tree_by_index
 
 app = Flask(__name__)
 
@@ -57,6 +57,24 @@ def tree_name():
                 request.form.get('x_stop'), request.form.get('y_start'), request.form.get('y_stop'), request.form.get('fields', '')]
             return render_template('root.html', res=res, args=args, name="Дерево имён")
     return render_template('root.html', args=args, name="Дерево имён")
+
+@app.route('/tree/index', methods=['GET', 'POST'])
+def tree_index():
+    args = ['' for i in range(7)]
+    if request.method == 'POST':
+        if 'sheet' in request.files:
+            file = request.files['sheet']
+            fname = 'uploaded_file.xlsx'
+            file.save(fname)
+            fields = request.form.get('fields', '').split('\n')
+            res = tree_by_index(fname, request.form.get('list'), request.form.get('x_field'), request.form.get('x_start'), 
+                request.form.get('x_stop'), int(request.form.get('y_start')), int(request.form.get('y_stop')), 
+                fields
+            )
+            args = [request.form.get('list'), request.form.get('x_start'), 
+                request.form.get('x_stop'), request.form.get('y_start'), request.form.get('y_stop'), request.form.get('fields', '')]
+            return render_template('root.html', res=res, args=args, name="Дерево индексов")
+    return render_template('root.html', args=args, name="Дерево индексов")
 
 if __name__ == '__main__':
     app.run(debug=True)

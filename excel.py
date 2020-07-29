@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 from fuzzywuzzy import fuzz
-from tree import get_tree, tab_depth, parse_xl, get_full
+from tree import get_tree, tab_depth, parse_xl, get_full, full_index, index_xl, code_depth
 
 def get_index(line):
     line = str(line)
@@ -107,6 +107,28 @@ def tree_by_name(filename, listname, x_start, x_stop, y_start, y_stop, fields):
                 else:
                     res[ind][k-3] = ws[get_name(x_start, k) + str(i)].value
         j += 1
+    return res
+
+def tree_by_index(filename, listname, x_index, x_start, x_stop, y_start, y_stop, fields):
+    length = get_len(x_start, x_stop)
+    res = [['\t' for i in range(length)] for i in range(len(fields))]
+    wb = load_workbook(filename=filename, data_only=True)
+    ws = wb[listname]
+
+    x_tree = get_tree(index_xl(filename, listname, x_index, get_name(x_index, 1), y_start, y_stop + 1), code_depth)
+    y_tree = get_tree(fields, code_depth)
+    aliases = [full_index(y_tree[i], y_tree) for i in range(len(y_tree))]
+
+    x = 0
+    for i in range(y_start, y_stop + 1):
+        for j in range(len(fields)):
+            if full_index(x_tree[x], x_tree) == aliases[j]:
+                for k in range(length):
+                    if ws[get_name(x_start, k) + str(i)].value == None:
+                        res[j][k] = ''
+                    else:
+                        res[j][k] = ws[get_name(x_start, k) + str(i)].value
+        x += 1
     return res
 
 #print(by_name('test.xlsx', 'Лист1', 'B', 'AB', 4, 16, [str(x) + '.' + 'Stonks' for x in range(1, 15)]))

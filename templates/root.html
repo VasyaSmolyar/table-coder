@@ -16,6 +16,9 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{url_for('tree_name')}}">Дерево имён</a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{url_for('tree_index')}}">Дерево индексов</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -25,7 +28,7 @@
                 <div class="form-group">
                     <label for="list">Имя листа</label>
                     <input class="form-control" id="list" name="list" value="{{args[0]}}">
-                    {% if name == 'По заголовку' %}
+                    {% if name == 'По заголовку' or name == 'Дерево индексов' %}
                     <label for="x_field">Столбец имён</label>
                     <input class="form-control" id="x_field" name="x_field" value="{{args[6]}}">
                     {% endif %}
@@ -59,6 +62,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div class="tbottom">
+                </div>
             {% endif %}
         </div>
         <footer class="my-footer text-center">
