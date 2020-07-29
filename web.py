@@ -5,25 +5,26 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    args = ['' for i in range(6)]
+    args = ['' for i in range(7)]
     if request.method == 'POST':
         if 'sheet' in request.files:
             file = request.files['sheet']
             fname = 'uploaded_file.xlsx'
             file.save(fname)
             fields = request.form.get('fields', '').split('\n')
-            res = by_name(fname, request.form.get('list'), request.form.get('x_start'), 
+            res = by_name(fname, request.form.get('list'), request.form.get('x_field'), request.form.get('x_start'), 
                 request.form.get('x_stop'), int(request.form.get('y_start')), int(request.form.get('y_stop')), 
                 fields
             )
             args = [request.form.get('list'), request.form.get('x_start'), 
-                request.form.get('x_stop'), request.form.get('y_start'), request.form.get('y_stop'), request.form.get('fields', '')]
+                request.form.get('x_stop'), request.form.get('y_start'), request.form.get('y_stop'), 
+                request.form.get('fields', ''), request.form.get('x_field', '')]
             return render_template('root.html', res=res, args=args, name="По заголовку")
     return render_template('root.html', args=args, name="По заголовку")
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    args = ['' for i in range(6)]
+    args = ['' for i in range(7)]
     if request.method == 'POST':
         if 'sheet' in request.files:
             file = request.files['sheet']
@@ -41,7 +42,7 @@ def index():
 
 @app.route('/tree/name', methods=['GET', 'POST'])
 def tree_name():
-    args = ['' for i in range(6)]
+    args = ['' for i in range(7)]
     if request.method == 'POST':
         if 'sheet' in request.files:
             file = request.files['sheet']

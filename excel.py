@@ -49,28 +49,28 @@ def compare(src, dest, scope=40):
     r, ind = best_match(src, dest)
     return (r >= scope, ind)
 
-def by_name(filename, listname, x_start, x_stop, y_start, y_stop, fields):
+def by_name(filename, listname, x_field, x_start, x_stop, y_start, y_stop, fields):
     length = get_len(x_start, x_stop)
-    res = [['\t' for i in range(length-3)] for i in range(len(fields))]
+    res = [['\t' for i in range(length-1)] for i in range(len(fields))]
     wb = load_workbook(filename=filename)
     ws = wb[listname]
 
     for i in range(y_start, y_stop + 1):
-        dd, ind = compare(ws[get_name(x_start, 1) + str(i)].value, fields)
+        dd, ind = compare(ws[x_field + str(i)].value, fields)
         if dd:
             if res[ind][0] != '\t':
                 continue
-            for k in range(3, length):
+            for k in range(length):
                 if ws[get_name(x_start, k) + str(i)].value == None:
-                    res[ind][k-3] = ''
+                    res[ind][k] = ''
                 else:
-                    res[ind][k-3] = ws[get_name(x_start, k) + str(i)].value
+                    res[ind][k] = ws[get_name(x_start, k) + str(i)].value
     return res
 
 def by_index(filename, listname, x_start, x_stop, y_start, y_stop, fields):
     length = get_len(x_start, x_stop)
     res = [['\t' for i in range(length-3)] for i in range(len(fields))]
-    wb = load_workbook(filename=filename)
+    wb = load_workbook(filename=filename, data_only=True)
     ws = wb[listname]
 
     for i in range(y_start, y_stop + 1):

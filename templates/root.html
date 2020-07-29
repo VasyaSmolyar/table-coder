@@ -25,6 +25,10 @@
                 <div class="form-group">
                     <label for="list">Имя листа</label>
                     <input class="form-control" id="list" name="list" value="{{args[0]}}">
+                    {% if name == 'По заголовку' %}
+                    <label for="x_field">Столбец имён</label>
+                    <input class="form-control" id="x_field" name="x_field" value="{{args[6]}}">
+                    {% endif %}
                     <label for="x_start">Начальный столбец</label>
                     <input class="form-control" id="x_start" name="x_start" value="{{args[1]}}">
                     <label for="x_stop">Конечный столбец</label>
